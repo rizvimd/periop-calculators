@@ -1,6 +1,6 @@
 {
   "name": "periop-calculators",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Evidence-based perioperative risk assessment calculators for healthcare professionals",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -27,16 +27,16 @@
     "healthcare",
     "clinical-tools"
   ],
-  "author": "Syed Haider Hasan Rizvi, MD (https://github.com/syedhhrizvi)",
+  "author": "Syed Haider Hasan Rizvi, MD (https://github.com/rizvimd)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/syedhhrizvi/periop-calculators.git"
+    "url": "https://github.com/rizvimd/periop-calculators.git"
   },
   "bugs": {
-    "url": "https://github.com/syedhhrizvi/periop-calculators/issues"
+    "url": "https://github.com/rizvimd/periop-calculators/issues"
   },
-  "homepage": "https://github.com/syedhhrizvi/periop-calculators#readme",
+  "homepage": "https://github.com/rizvimd/periop-calculators#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",

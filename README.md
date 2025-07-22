@@ -196,14 +196,14 @@ Planned additions to this package:
 
 ## License
 
-MIT © [Syed Haider Hasan Rizvi, MD](https://github.com/syedhhrizvi)
+MIT © [Syed Haider Hasan Rizvi, MD](https://github.com/rizvimd)
 
 ## Author
 
 **Dr. Syed Haider Hasan Rizvi**
 - Board-certified anesthesiologist and physician-developer
 - Creator of [CoagRX](https://coagrx.com) and PeriopAI
-- [GitHub](https://github.com/syedhhrizvi) | [LinkedIn](https://linkedin.com/in/syedhhrizvi)
+- [GitHub](https://github.com/rizvimd) | [LinkedIn](https://linkedin.com/in/syedhhrizvi)
 
 ---
 
