@@ -1,0 +1,59 @@
+{
+  "name": "periop-calculators",
+  "version": "1.0.0",
+  "description": "Evidence-based perioperative risk assessment calculators for healthcare professionals",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "medical",
+    "calculators",
+    "perioperative",
+    "anesthesia",
+    "risk-assessment",
+    "stop-bang",
+    "healthcare",
+    "clinical-tools"
+  ],
+  "author": "Syed Haider Hasan Rizvi, MD (https://github.com/syedhhrizvi)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syedhhrizvi/periop-calculators.git"
+  },
+  "bugs": {
+    "url": "https://github.com/syedhhrizvi/periop-calculators/issues"
+  },
+  "homepage": "https://github.com/syedhhrizvi/periop-calculators#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/jest": "^29.5.11",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.1.1",
+    "rollup": "^4.9.1",
+    "rollup-plugin-dts": "^6.1.0",
+    "ts-jest": "^29.1.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
