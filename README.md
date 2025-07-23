@@ -55,7 +55,7 @@ console.log(result);
 
 ## Available Calculators
 
-### STOP-BANG Score
+### 1. STOP-BANG Score
 
 Screening tool for obstructive sleep apnea (OSA) in surgical patients.
 
@@ -108,9 +108,58 @@ const result = calculateStopBang(
 - **Intermediate Risk (3-4)**: Further evaluation may be warranted
 - **High Risk (5-8)**: High probability of moderate to severe OSA
 
+### 2. RCRI (Revised Cardiac Risk Index)
+
+Estimates risk of cardiac complications for patients undergoing non-cardiac surgery.
+
+```typescript
+import { calculateRCRI, RCRIInput, RCRIResult } from 'periop-calculators';
+
+const input: RCRIInput = {
+  highRiskSurgery: true,          // Intraperitoneal, intrathoracic, or suprainguinal vascular
+  ischemicHeartDisease: false,    // History of MI, positive stress test, angina, nitrate use
+  congestiveHeartFailure: false,  // History of CHF, pulmonary edema, or dyspnea
+  cerebrovascularDisease: false,  // History of stroke or TIA
+  insulinDependentDiabetes: true, // Diabetes requiring insulin therapy
+  renalInsufficiency: false       // Creatinine > 2.0 mg/dL
+};
+
+const result: RCRIResult = calculateRCRI(input);
+
+console.log(result);
+// {
+//   score: 2,
+//   riskClass: 'III',
+//   estimatedRisk: '6.6%',
+//   riskPercentage: 6.6,
+//   interpretation: 'RCRI Class III with 2 risk factors...',
+//   riskFactors: { ... },
+//   recommendations: [...]
+// }
+```
+
+#### Risk Classification
+
+- **Class I (0 points)**: 0.4% risk of major cardiac complications
+- **Class II (1 point)**: 0.9% risk of major cardiac complications
+- **Class III (2 points)**: 6.6% risk of major cardiac complications
+- **Class IV (≥3 points)**: ≥11% risk of major cardiac complications
+
+#### Helper Function
+
+```typescript
+import { isHighRiskSurgery } from 'periop-calculators';
+
+// Check if a surgery type is considered high risk
+const isHighRisk = isHighRiskSurgery('aortic aneurysm repair'); // true
+const isLowRisk = isHighRiskSurgery('cataract surgery');        // false
+```
+
 ## API Reference
 
 ### Types
+
+#### STOP-BANG Types
 
 ```typescript
 interface StopBangInput {
@@ -142,6 +191,36 @@ interface StopBangResult {
 }
 ```
 
+#### RCRI Types
+
+```typescript
+interface RCRIInput {
+  highRiskSurgery: boolean;
+  ischemicHeartDisease: boolean;
+  congestiveHeartFailure: boolean;
+  cerebrovascularDisease: boolean;
+  insulinDependentDiabetes: boolean;
+  renalInsufficiency: boolean;
+}
+
+interface RCRIResult {
+  score: number;
+  riskClass: 'I' | 'II' | 'III' | 'IV';
+  estimatedRisk: string;
+  riskPercentage: number;
+  interpretation: string;
+  riskFactors: {
+    highRiskSurgery: boolean;
+    ischemicHeartDisease: boolean;
+    congestiveHeartFailure: boolean;
+    cerebrovascularDisease: boolean;
+    insulinDependentDiabetes: boolean;
+    renalInsufficiency: boolean;
+  };
+  recommendations: string[];
+}
+```
+
 ### Utility Functions
 
 ```typescript
@@ -153,9 +232,15 @@ const bmi = calculateBMI(80, 175); // weight in kg, height in cm
 
 ## Clinical References
 
+### STOP-BANG References
 1. Chung F, et al. STOP-Bang Questionnaire: A Tool to Screen Patients for Obstructive Sleep Apnea. Anesthesiology. 2008;108(5):812-821.
 
 2. Chung F, et al. High STOP-Bang score indicates a high probability of obstructive sleep apnoea. Br J Anaesth. 2012;108(5):768-775.
+
+### RCRI References
+1. Lee TH, et al. Derivation and prospective validation of a simple index for prediction of cardiac risk of major noncardiac surgery. Circulation. 1999;100(10):1043-1049.
+
+2. Duceppe E, et al. Canadian Cardiovascular Society Guidelines on Perioperative Cardiac Risk Assessment and Management for Patients Who Undergo Noncardiac Surgery. Can J Cardiol. 2017;33(1):17-32.
 
 ## Development
 
@@ -187,7 +272,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 Planned additions to this package:
 
-- [ ] RCRI (Revised Cardiac Risk Index)
+- [x] RCRI (Revised Cardiac Risk Index) ✅
 - [ ] MELD Score
 - [ ] P-POSSUM Score
 - [ ] Apfel Score for PONV

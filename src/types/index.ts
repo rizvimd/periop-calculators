@@ -44,3 +44,29 @@ export interface ValidationResult {
   isValid: boolean;
   errors: CalculatorError[];
 }
+
+export interface RCRIInput {
+  highRiskSurgery: boolean;
+  ischemicHeartDisease: boolean;
+  congestiveHeartFailure: boolean;
+  cerebrovascularDisease: boolean;
+  insulinDependentDiabetes: boolean;
+  renalInsufficiency: boolean;
+}
+
+export interface RCRIResult {
+  score: number;
+  riskClass: 'I' | 'II' | 'III' | 'IV';
+  estimatedRisk: string;
+  riskPercentage: number;
+  interpretation: string;
+  riskFactors: {
+    highRiskSurgery: boolean;
+    ischemicHeartDisease: boolean;
+    congestiveHeartFailure: boolean;
+    cerebrovascularDisease: boolean;
+    insulinDependentDiabetes: boolean;
+    renalInsufficiency: boolean;
+  };
+  recommendations: string[];
+}

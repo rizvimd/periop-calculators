@@ -8,6 +8,7 @@
 
 // Export all calculators
 export { calculateStopBang, calculateStopBangScore } from './calculators/stop-bang';
+export { calculateRCRI, isHighRiskSurgery } from './calculators/rcri';
 
 // Export all types - this is important for TypeScript users
 export type {
@@ -19,6 +20,10 @@ export type {
   // STOP-BANG specific types
   StopBangInput,
   StopBangResult,
+  
+  // RCRI specific types
+  RCRIInput,
+  RCRIResult,
 } from './types';
 
 // Export utility functions that might be useful
