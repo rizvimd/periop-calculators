@@ -1,6 +1,6 @@
 {
   "name": "periop-calculators",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Evidence-based perioperative risk assessment calculators for healthcare professionals",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

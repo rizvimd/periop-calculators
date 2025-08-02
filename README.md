@@ -230,6 +230,51 @@ const bmi = calculateBMI(80, 175); // weight in kg, height in cm
 // Returns: 26.1
 ```
 
+### 3. Apfel Score for PONV
+
+Predicts risk of postoperative nausea and vomiting (PONV) in adult patients undergoing general anesthesia.
+
+```typescript
+import { calculateApfelScore, ApfelScoreInput, ApfelScoreResult } from 'periop-calculators';
+
+const input: ApfelScoreInput = {
+  female: true,                   // Female gender
+  nonSmoker: true,               // Non-smoking status
+  historyOfPONV: false,          // History of PONV or motion sickness
+  postoperativeOpioids: true     // Expected postoperative opioid use
+};
+
+const result: ApfelScoreResult = calculateApfelScore(input);
+
+console.log(result);
+// {
+//   score: 3,
+//   riskPercentage: 61,
+//   risk: 'very-high',
+//   interpretation: 'Apfel Score of 3 with 3 risk factors...',
+//   riskFactors: { ... },
+//   recommendations: [...]
+// }
+```
+
+#### Risk Stratification
+
+- **0 points**: 10% risk of PONV (low risk)
+- **1 point**: 21% risk of PONV (moderate risk)
+- **2 points**: 39% risk of PONV (high risk)
+- **3 points**: 61% risk of PONV (very high risk)
+- **4 points**: 79% risk of PONV (very high risk)
+
+#### Helper Function
+
+```typescript
+import { getApfelRiskFactorInfo } from 'periop-calculators';
+
+// Get detailed information about a specific risk factor
+const info = getApfelRiskFactorInfo('female');
+// Returns: "Female gender is associated with 2-3 times higher risk of PONV compared to males"
+```
+
 ## Clinical References
 
 ### STOP-BANG References
@@ -241,6 +286,11 @@ const bmi = calculateBMI(80, 175); // weight in kg, height in cm
 1. Lee TH, et al. Derivation and prospective validation of a simple index for prediction of cardiac risk of major noncardiac surgery. Circulation. 1999;100(10):1043-1049.
 
 2. Duceppe E, et al. Canadian Cardiovascular Society Guidelines on Perioperative Cardiac Risk Assessment and Management for Patients Who Undergo Noncardiac Surgery. Can J Cardiol. 2017;33(1):17-32.
+
+### Apfel Score References
+1. Apfel CC, et al. A simplified risk score for predicting postoperative nausea and vomiting: conclusions from cross-validations between two centers. Anesthesiology. 1999;91(3):693-700.
+
+2. Apfel CC, et al. Evidence-based analysis of risk factors for postoperative nausea and vomiting. Br J Anaesth. 2012;109(5):742-753.
 
 ## Development
 
@@ -275,7 +325,7 @@ Planned additions to this package:
 - [x] RCRI (Revised Cardiac Risk Index) ✅
 - [ ] MELD Score
 - [ ] P-POSSUM Score
-- [ ] Apfel Score for PONV
+- [x] Apfel Score for PONV ✅
 - [ ] Caprini Score for VTE Risk
 - [ ] ASA Physical Status Calculator
 

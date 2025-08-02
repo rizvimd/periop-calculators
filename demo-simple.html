@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periop Calculators Demo - Simple Version</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .calculator {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+        .result.show {
+            display: block;
+        }
+        .risk-low { color: #28a745; font-weight: bold; }
+        .risk-intermediate, .risk-moderate { color: #ffc107; font-weight: bold; }
+        .risk-high { color: #fd7e14; font-weight: bold; }
+        .risk-very-high { color: #dc3545; font-weight: bold; }
+        .recommendations {
+            margin-top: 10px;
+        }
+        .recommendations li {
+            margin-bottom: 5px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .info {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Perioperative Risk Calculators Demo</h1>
+    
+    <div class="info">
+        <p><strong>Note:</strong> This is a simplified demo version. For production use, install the npm package: <code>npm install periop-calculators</code></p>
+    </div>
+    
+    <div class="grid">
+        <!-- STOP-BANG Calculator -->
+        <div class="calculator">
+            <h2>STOP-BANG Calculator</h2>
+            <form id="stopbang-form">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="snoring">
+                    <label for="snoring">Snoring loudly</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="tiredness">
+                    <label for="tiredness">Tired/fatigued during daytime</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="observed">
+                    <label for="observed">Observed apnea</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="pressure">
+                    <label for="pressure">High blood pressure</label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bmi">BMI (kg/m²)</label>
+                    <input type="number" id="bmi" step="0.1" placeholder="e.g., 28.5">
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">Age (years)</label>
+                    <input type="number" id="age" placeholder="e.g., 55">
+                </div>
+                
+                <div class="form-group">
+                    <label for="neck">Neck Circumference (cm)</label>
+                    <input type="number" id="neck" step="0.1" placeholder="e.g., 42">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender">
+                        <option value="">Select...</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                
+                <button type="button" onclick="calculateStopBang()">Calculate STOP-BANG Score</button>
+            </form>
+            
+            <div id="stopbang-result" class="result"></div>
+        </div>
+        
+        <!-- RCRI Calculator -->
+        <div class="calculator">
+            <h2>RCRI Calculator</h2>
+            <form id="rcri-form">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="highRisk">
+                    <label for="highRisk">High-risk surgery</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="ihd">
+                    <label for="ihd">Ischemic heart disease</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="chf">
+                    <label for="chf">Congestive heart failure</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="cvd">
+                    <label for="cvd">Cerebrovascular disease</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="diabetes">
+                    <label for="diabetes">Insulin-dependent diabetes</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="renal">
+                    <label for="renal">Renal insufficiency (Cr >2.0)</label>
+                </div>
+                
+                <button type="button" onclick="calculateRCRI()">Calculate RCRI Score</button>
+            </form>
+            
+            <div id="rcri-result" class="result"></div>
+        </div>
+        
+        <!-- Apfel Score Calculator -->
+        <div class="calculator">
+            <h2>Apfel Score for PONV</h2>
+            <form id="apfel-form">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="female">
+                    <label for="female">Female gender</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="nonSmoker">
+                    <label for="nonSmoker">Non-smoker</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="historyPONV">
+                    <label for="historyPONV">History of PONV or motion sickness</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="opioids">
+                    <label for="opioids">Postoperative opioids expected</label>
+                </div>
+                
+                <button type="button" onclick="calculateApfel()">Calculate Apfel Score</button>
+            </form>
+            
+            <div id="apfel-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simplified calculator implementations for demo purposes
+        
+        function calculateStopBang() {
+            // Get form values
+            const snoring = document.getElementById('snoring').checked;
+            const tiredness = document.getElementById('tiredness').checked;
+            const observed = document.getElementById('observed').checked;
+            const pressure = document.getElementById('pressure').checked;
+            const bmi = parseFloat(document.getElementById('bmi').value) || 0;
+            const age = parseInt(document.getElementById('age').value) || 0;
+            const neck = parseFloat(document.getElementById('neck').value) || 0;
+            const gender = document.getElementById('gender').value;
+            
+            // Calculate score
+            let score = 0;
+            if (snoring) score++;
+            if (tiredness) score++;
+            if (observed) score++;
+            if (pressure) score++;
+            if (bmi > 35) score++;
+            if (age > 50) score++;
+            if (neck > 40) score++;
+            if (gender === 'male') score++;
+            
+            // Determine risk level
+            let risk = 'low';
+            let riskClass = 'risk-low';
+            if (score >= 3 && score <= 4) {
+                risk = 'intermediate';
+                riskClass = 'risk-intermediate';
+            } else if (score >= 5) {
+                risk = 'high';
+                riskClass = 'risk-high';
+            }
+            
+            // Generate interpretation
+            let interpretation = '';
+            if (risk === 'low') {
+                interpretation = `STOP-BANG score of ${score} indicates low risk of obstructive sleep apnea.`;
+            } else if (risk === 'intermediate') {
+                interpretation = `STOP-BANG score of ${score} indicates intermediate risk of obstructive sleep apnea. Further evaluation may be warranted.`;
+            } else {
+                interpretation = `STOP-BANG score of ${score} indicates high risk of obstructive sleep apnea. Consider polysomnography and perioperative precautions.`;
+            }
+            
+            // Display results
+            const resultDiv = document.getElementById('stopbang-result');
+            resultDiv.innerHTML = `
+                <h3>STOP-BANG Results</h3>
+                <p><strong>Score:</strong> ${score}/8</p>
+                <p><strong>Risk Level:</strong> <span class="${riskClass}">${risk.toUpperCase()}</span></p>
+                <p><strong>Interpretation:</strong> ${interpretation}</p>
+                <div class="recommendations">
+                    <strong>Key Recommendations:</strong>
+                    <ul>
+                        ${risk === 'high' ? '<li>Consider polysomnography before elective surgery</li>' : ''}
+                        ${risk === 'high' ? '<li>Plan for possible postoperative continuous monitoring</li>' : ''}
+                        ${risk !== 'low' ? '<li>Document STOP-BANG score in preoperative assessment</li>' : ''}
+                        <li>Consider multimodal analgesia to minimize opioid use</li>
+                    </ul>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+        
+        function calculateRCRI() {
+            // Get form values
+            const highRisk = document.getElementById('highRisk').checked;
+            const ihd = document.getElementById('ihd').checked;
+            const chf = document.getElementById('chf').checked;
+            const cvd = document.getElementById('cvd').checked;
+            const diabetes = document.getElementById('diabetes').checked;
+            const renal = document.getElementById('renal').checked;
+            
+            // Calculate score
+            let score = 0;
+            if (highRisk) score++;
+            if (ihd) score++;
+            if (chf) score++;
+            if (cvd) score++;
+            if (diabetes) score++;
+            if (renal) score++;
+            
+            // Determine risk class and percentage
+            let riskClass, estimatedRisk, riskPercentage;
+            if (score === 0) {
+                riskClass = 'I';
+                estimatedRisk = '0.4%';
+                riskPercentage = 0.4;
+            } else if (score === 1) {
+                riskClass = 'II';
+                estimatedRisk = '0.9%';
+                riskPercentage = 0.9;
+            } else if (score === 2) {
+                riskClass = 'III';
+                estimatedRisk = '6.6%';
+                riskPercentage = 6.6;
+            } else {
+                riskClass = 'IV';
+                estimatedRisk = '≥11%';
+                riskPercentage = 11;
+            }
+            
+            // Determine color class
+            let colorClass = 'risk-low';
+            if (riskPercentage > 5) colorClass = 'risk-intermediate';
+            if (riskPercentage >= 10) colorClass = 'risk-high';
+            
+            // Generate interpretation
+            let interpretation = `RCRI Class ${riskClass} with ${score} risk factor${score !== 1 ? 's' : ''}. `;
+            interpretation += `Estimated risk of major cardiac complications is ${estimatedRisk}.`;
+            
+            // Display results
+            const resultDiv = document.getElementById('rcri-result');
+            resultDiv.innerHTML = `
+                <h3>RCRI Results</h3>
+                <p><strong>Score:</strong> ${score} points</p>
+                <p><strong>Risk Class:</strong> ${riskClass}</p>
+                <p><strong>Estimated Risk:</strong> <span class="${colorClass}">${estimatedRisk}</span></p>
+                <p><strong>Interpretation:</strong> ${interpretation}</p>
+                <div class="recommendations">
+                    <strong>Key Recommendations:</strong>
+                    <ul>
+                        ${score === 0 ? '<li>Proceed with standard perioperative care</li>' : ''}
+                        ${score === 1 ? '<li>Consider perioperative beta-blockade if not already prescribed</li>' : ''}
+                        ${score === 2 ? '<li>Consider cardiology consultation for risk assessment</li>' : ''}
+                        ${score >= 3 ? '<li>Strongly consider cardiology consultation before surgery</li>' : ''}
+                        ${score >= 2 ? '<li>Consider additional cardiac testing if it will change management</li>' : ''}
+                        <li>Monitor for signs of cardiac complications postoperatively</li>
+                    </ul>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+        
+        function calculateApfel() {
+            // Get form values
+            const female = document.getElementById('female').checked;
+            const nonSmoker = document.getElementById('nonSmoker').checked;
+            const historyPONV = document.getElementById('historyPONV').checked;
+            const opioids = document.getElementById('opioids').checked;
+            
+            // Calculate score
+            let score = 0;
+            if (female) score++;
+            if (nonSmoker) score++;
+            if (historyPONV) score++;
+            if (opioids) score++;
+            
+            // Determine risk percentage and level
+            const riskPercentages = {
+                0: 10,
+                1: 21,
+                2: 39,
+                3: 61,
+                4: 79
+            };
+            
+            const riskPercentage = riskPercentages[score];
+            let risk, riskClass;
+            
+            if (score === 0) {
+                risk = 'low';
+                riskClass = 'risk-low';
+            } else if (score === 1) {
+                risk = 'moderate';
+                riskClass = 'risk-moderate';
+            } else if (score === 2) {
+                risk = 'high';
+                riskClass = 'risk-high';
+            } else {
+                risk = 'very high';
+                riskClass = 'risk-very-high';
+            }
+            
+            // Generate interpretation
+            const riskFactorCount = score === 0 ? 'no' : score.toString();
+            const riskFactorPlural = score === 1 ? 'risk factor' : 'risk factors';
+            const interpretation = `Apfel Score of ${score} with ${riskFactorCount} ${riskFactorPlural} indicates ${risk} risk for PONV. Estimated incidence: ${riskPercentage}% chance of experiencing postoperative nausea and vomiting.`;
+            
+            // Generate recommendations
+            let recommendations = [];
+            if (score === 0) {
+                recommendations.push('Low risk patient - routine PONV prophylaxis may not be necessary');
+                recommendations.push('Consider prophylaxis if other risk factors present (e.g., type of surgery)');
+            } else if (score === 1) {
+                recommendations.push('Consider single-agent PONV prophylaxis');
+                recommendations.push('Options include dexamethasone, ondansetron, or droperidol');
+            } else if (score === 2) {
+                recommendations.push('Recommend dual-agent PONV prophylaxis');
+                recommendations.push('Consider combination therapy (e.g., dexamethasone + ondansetron)');
+            } else if (score >= 3) {
+                recommendations.push('High-risk patient - recommend multimodal PONV prophylaxis');
+                recommendations.push('Consider 3-4 antiemetic agents from different classes');
+                recommendations.push('Consider total intravenous anesthesia (TIVA) with propofol');
+                if (opioids) {
+                    recommendations.push('Consider regional anesthesia or non-opioid analgesics to reduce opioid requirements');
+                }
+            }
+            
+            // Display results
+            const resultDiv = document.getElementById('apfel-result');
+            resultDiv.innerHTML = `
+                <h3>Apfel Score Results</h3>
+                <p><strong>Score:</strong> ${score}/4</p>
+                <p><strong>Risk Level:</strong> <span class="${riskClass}">${risk.toUpperCase()}</span></p>
+                <p><strong>PONV Risk:</strong> <span class="${riskClass}">${riskPercentage}%</span></p>
+                <p><strong>Interpretation:</strong> ${interpretation}</p>
+                <div class="recommendations">
+                    <strong>Key Recommendations:</strong>
+                    <ul>
+                        ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+    </script>
+</body>
+</html>

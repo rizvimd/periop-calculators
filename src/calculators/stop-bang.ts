@@ -2,9 +2,10 @@ import {
   StopBangInput,
   StopBangResult,
   PatientDemographics,
-  CalculatorError,
+  CalculatorError as CalculatorErrorInterface,
 } from '../types';
 import { validateAge, validateBMI, calculateBMI } from '../utils/validation';
+import { CalculatorError } from '../utils/errors';
 
 /**
  * Calculate STOP-BANG score for obstructive sleep apnea risk assessment
@@ -42,7 +43,7 @@ export function calculateStopBang(
   input: StopBangInput,
   demographics?: PatientDemographics
 ): StopBangResult {
-  const errors: CalculatorError[] = [];
+  const errors: CalculatorErrorInterface[] = [];
 
   // Determine age
   const age = input.age ?? demographics?.age;
@@ -75,7 +76,7 @@ export function calculateStopBang(
   const neckCircumference = input.neckCircumference ?? demographics?.neckCircumference;
 
   if (errors.length > 0) {
-    throw new Error(
+    throw new CalculatorError(
       `Validation errors: ${errors.map((e) => e.message).join(', ')}`
     );
   }
@@ -196,6 +197,6 @@ export function calculateStopBangScore(input: StopBangInput): number {
     const result = calculateStopBang(input);
     return result.score;
   } catch (error) {
-    throw new Error(`Cannot calculate STOP-BANG score: ${error}`);
+    throw new CalculatorError(`Cannot calculate STOP-BANG score: ${error}`);
   }
 }

@@ -70,3 +70,25 @@ export interface RCRIResult {
   };
   recommendations: string[];
 }
+
+// Apfel Score types
+export interface ApfelScoreInput {
+  female: boolean;
+  nonSmoker: boolean;
+  historyOfPONV: boolean;
+  postoperativeOpioids: boolean;
+}
+
+export interface ApfelScoreResult {
+  score: number;
+  riskPercentage: number;
+  risk: 'low' | 'moderate' | 'high' | 'very-high';
+  interpretation: string;
+  riskFactors: {
+    female: boolean;
+    nonSmoker: boolean;
+    historyOfPONV: boolean;
+    postoperativeOpioids: boolean;
+  };
+  recommendations: string[];
+}
