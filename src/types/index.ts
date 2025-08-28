@@ -92,3 +92,37 @@ export interface ApfelScoreResult {
   };
   recommendations: string[];
 }
+
+// MELD Score types
+export interface MELDScoreInput {
+  /** Serum bilirubin in mg/dL */
+  bilirubin: number;
+  /** Serum creatinine in mg/dL */
+  creatinine: number;
+  /** International normalized ratio (INR) */
+  inr: number;
+  /** Patient has received dialysis twice within the past week */
+  dialysis?: boolean;
+}
+
+export interface MELDScoreResult {
+  /** MELD score (6-40) */
+  score: number;
+  /** 3-month mortality estimate */
+  mortalityRisk: string;
+  /** Mortality percentage */
+  mortalityPercentage: number;
+  /** Risk category */
+  risk: 'low' | 'moderate' | 'high' | 'very-high';
+  /** Clinical interpretation */
+  interpretation: string;
+  /** Laboratory values used in calculation */
+  labValues: {
+    bilirubin: number;
+    creatinine: number;
+    inr: number;
+    dialysis: boolean;
+  };
+  /** Clinical recommendations */
+  recommendations: string[];
+}

@@ -10,6 +10,7 @@
 export { calculateStopBang, calculateStopBangScore } from './calculators/stop-bang';
 export { calculateRCRI, isHighRiskSurgery } from './calculators/rcri';
 export { calculateApfelScore, getApfelRiskFactorInfo } from './calculators/apfel';
+export { calculateMELDScore, isHighRiskMELD, getMELDRiskCategory } from './calculators/meld';
 
 // Export all types - this is important for TypeScript users
 export type {
@@ -29,6 +30,10 @@ export type {
   // Apfel Score specific types
   ApfelScoreInput,
   ApfelScoreResult,
+  
+  // MELD Score specific types
+  MELDScoreInput,
+  MELDScoreResult,
 } from './types';
 
 // Export utility functions that might be useful

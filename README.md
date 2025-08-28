@@ -221,6 +221,32 @@ interface RCRIResult {
 }
 ```
 
+#### MELD Score Types
+
+```typescript
+interface MELDScoreInput {
+  bilirubin: number;    // Serum bilirubin in mg/dL
+  creatinine: number;   // Serum creatinine in mg/dL
+  inr: number;          // International normalized ratio
+  dialysis?: boolean;   // Dialysis twice within past week (optional)
+}
+
+interface MELDScoreResult {
+  score: number;              // MELD score (6-40)
+  mortalityRisk: string;      // 3-month mortality estimate
+  mortalityPercentage: number; // Mortality percentage
+  risk: 'low' | 'moderate' | 'high' | 'very-high';
+  interpretation: string;     // Clinical interpretation
+  labValues: {
+    bilirubin: number;
+    creatinine: number;
+    inr: number;
+    dialysis: boolean;
+  };
+  recommendations: string[];
+}
+```
+
 ### Utility Functions
 
 ```typescript
@@ -230,7 +256,55 @@ const bmi = calculateBMI(80, 175); // weight in kg, height in cm
 // Returns: 26.1
 ```
 
-### 3. Apfel Score for PONV
+### 3. MELD Score (Model for End-Stage Liver Disease)
+
+Assesses liver disease severity and predicts short-term mortality in patients with end-stage liver disease.
+
+```typescript
+import { calculateMELDScore, MELDScoreInput, MELDScoreResult } from 'periop-calculators';
+
+const input: MELDScoreInput = {
+  bilirubin: 2.5,      // Serum bilirubin in mg/dL
+  creatinine: 1.8,     // Serum creatinine in mg/dL  
+  inr: 1.6,            // International normalized ratio
+  dialysis: false      // Dialysis twice in past week (optional)
+};
+
+const result: MELDScoreResult = calculateMELDScore(input);
+
+console.log(result);
+// {
+//   score: 21,
+//   mortalityRisk: '19.6%',
+//   mortalityPercentage: 19.6,
+//   risk: 'high',
+//   interpretation: 'MELD score of 21 indicates high risk...',
+//   labValues: { bilirubin: 2.5, creatinine: 1.8, inr: 1.6, dialysis: false },
+//   recommendations: [...]
+// }
+```
+
+#### Risk Stratification
+
+- **Low Risk (6-9)**: 1.9% 3-month mortality risk
+- **Moderate Risk (10-19)**: 6.0% 3-month mortality risk  
+- **High Risk (20-29)**: 19.6% 3-month mortality risk
+- **Very High Risk (30-40)**: 52.6% 3-month mortality risk
+
+#### Helper Functions
+
+```typescript
+import { isHighRiskMELD, getMELDRiskCategory } from 'periop-calculators';
+
+// Check if MELD score indicates high surgical risk
+const isHighRisk = isHighRiskMELD(25); // true (score ≥ 20)
+const isLowRisk = isHighRiskMELD(15);  // false
+
+// Get risk category without full calculation
+const riskCategory = getMELDRiskCategory(22); // 'high'
+```
+
+### 4. Apfel Score for PONV
 
 Predicts risk of postoperative nausea and vomiting (PONV) in adult patients undergoing general anesthesia.
 
@@ -287,6 +361,13 @@ const info = getApfelRiskFactorInfo('female');
 
 2. Duceppe E, et al. Canadian Cardiovascular Society Guidelines on Perioperative Cardiac Risk Assessment and Management for Patients Who Undergo Noncardiac Surgery. Can J Cardiol. 2017;33(1):17-32.
 
+### MELD Score References
+1. Kamath PS, et al. A model to predict survival in patients with end-stage liver disease. Hepatology. 2001;33(2):464-470.
+
+2. Wiesner R, et al. Model for end-stage liver disease (MELD) and allocation of donor livers. Gastroenterology. 2003;124(1):91-96.
+
+3. Teh SH, et al. Risk factors for mortality after surgery in patients with cirrhosis. Gastroenterology. 2007;132(4):1261-1269.
+
 ### Apfel Score References
 1. Apfel CC, et al. A simplified risk score for predicting postoperative nausea and vomiting: conclusions from cross-validations between two centers. Anesthesiology. 1999;91(3):693-700.
 
@@ -323,7 +404,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 Planned additions to this package:
 
 - [x] RCRI (Revised Cardiac Risk Index) ✅
-- [ ] MELD Score
+- [x] MELD Score ✅
 - [ ] P-POSSUM Score
 - [x] Apfel Score for PONV ✅
 - [ ] Caprini Score for VTE Risk

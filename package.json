@@ -1,6 +1,6 @@
 {
   "name": "periop-calculators",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Evidence-based perioperative risk assessment calculators for healthcare professionals",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -26,6 +26,8 @@
     "stop-bang",
     "rcri",
     "revised-cardiac-risk-index",
+    "meld",
+    "liver-disease",
     "healthcare",
     "clinical-tools"
   ],
